@@ -38,7 +38,30 @@ public class MongoExample02 : MonoBehaviour
         var data2002 = movieCollection.Find(filter).Limit(5).ToList();
 
         // 3-2. '필터 쿼리'를 사용한 방식
-        var filter2 = Builders<BsonDocument>.Filter.Eq("year", 2002);
+        var filter2 = Builders<BsonDocument>.Filter.Gt("year", 2002);
         var data20022 = movieCollection.Find(filter2).Limit(5).ToList();
+
+        // 4. 논리 연산자 (And, Or, Not)
+        // if (1992 <= year && year <= 2002)
+        var filterGte1992  = Builders<BsonDocument>.Filter.Gte("year", 1992);
+        var filterLte2002  = Builders<BsonDocument>.Filter.Lte("year", 2002);
+        var filterFinal = Builders<BsonDocument>.Filter.And(filterGte1992, filterLte2002);
+        var data1992_2002 = movieCollection.Find(filterFinal).Limit(5).ToList();
+        foreach(var d in data1992_2002)
+        {
+            Debug.Log(d["title"]);
+        }
+
+        // 5. where 연산자
+        var whereFilter = Builders<BsonDocument>.Filter. Where(d => 1992 <= d["year"] && d["year"] <= 2002);
+        var data1992_20023 = movieCollection.Find(filterFinal).Limit(5).ToList();
+
+        // 6. 람다식
+        var finalData = movieCollection.Find(d => 1992 <= d["year"] && d["year"] <= 2002).Limit(5).ToList();
+
+        foreach (var d in finalData)
+        {
+            Debug.Log(d["title"]);
+        }
     }
 }

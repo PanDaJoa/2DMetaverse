@@ -9,6 +9,7 @@ public class UI_ArticleList : MonoBehaviour
     public GameObject EmptyObject;
     // 새로고침
 
+    public GameObject[] Images;
     public void Start()
     {
         Refresh();
@@ -36,5 +37,45 @@ public class UI_ArticleList : MonoBehaviour
         }
     }
 
+    public void OnclickAllArticles(GameObject gameObject)
+    {
+        for (int i = 0;i < Images.Length; i++)
+        {
+            Images[i].SetActive(false);
+        }
+        gameObject.SetActive(true);
+    }
+    public void OnclickNoticeArticles(GameObject gameObject)
+    {
+        for (int i = 0; i < Images.Length; i++)
+        {
+            Images[i].SetActive(false);
+        }
+        gameObject.SetActive(true);
+    }
+    public void OnclickPictureArticles(GameObject gameObject)
+    {
+        for (int i = 0; i < Images.Length; i++)
+        {
+            Images[i].SetActive(false);
+        }
+        gameObject.SetActive(true);
+    }
+    public void OnclickVideoArticles(GameObject gameObject)
+    {
+        for (int i = 0; i < Images.Length; i++)
+        {
+            Images[i].SetActive(false);
+        }
+        gameObject.SetActive(true);
+    }
+    public void OnclickFileArticles(GameObject gameObject)
+    {
+        for (int i = 0; i < Images.Length; i++)
+        {
+            Images[i].SetActive(false);
+        }
+        gameObject.SetActive(true);
+    }
 
 }
