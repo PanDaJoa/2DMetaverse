@@ -33,6 +33,7 @@ public class UI_ArticleList : MonoBehaviour
 
                 // 4. 각 UI_Article의 내용을 Article로 초기화(Init)한다.
                 UIArticles[i].Init(articles[i]);
+                Debug.Log(articles[i].WriteTime);
             }
         }
     }

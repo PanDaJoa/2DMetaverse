@@ -17,6 +17,37 @@ public class UI_Article : MonoBehaviour
         NameTextUI.text = article.Name;
         ContentTextUI.text = article.Content;
         LikeTextUI.text = $"{article.Like}";
-        WriteTimeTextUI.text = $"{article.WriteTime}";
+        WriteTimeTextUI.text = GetTimeString(article.WriteTime);
     }
+
+    private string GetTimeString(DateTime dateTime)
+    {
+        TimeSpan TimeSpan = DateTime.Now - dateTime;
+        if (TimeSpan.TotalMinutes < 1)         // 1분 이내 -> 방금 전
+        {
+            return "방금 전";
+        }
+        else if (TimeSpan.TotalHours < 1)      // 1시간 이내 -> n분전
+        {
+            return $"{TimeSpan.Minutes}분 전";
+        }
+        else if (TimeSpan.TotalDays < 1)       // 하루 이내 -> n시간 전
+        {
+            return $"{TimeSpan.Hours}시간 전";
+        }
+        else if (TimeSpan.TotalDays < 7)       // 7일 이내 -> n일 전
+        {
+            return $"{TimeSpan.Days}일 전";
+        }
+        else if (TimeSpan.TotalDays < 7 * 4)   // 4주 이내 -> n주 전
+        {
+            return $"{TimeSpan.Days / 7}주 전";
+        }
+        else
+        {
+            return dateTime.ToString("yyyy-MM-dd");
+        }
+    }
+
 }
+
