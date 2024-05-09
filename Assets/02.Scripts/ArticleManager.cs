@@ -19,28 +19,39 @@ public class ArticleManager : MonoBehaviour
     private List<Article> _articles = new List<Article>();
     public List<Article> Articles => _articles;
 
+    private IMongoCollection<BsonDocument> _articleCollection;
     public static ArticleManager Instance { get; private set; }
     private void Awake()
     {
         Instance = this;
+        Init();
+        FindAll();
+    }
 
-
+    // 몽고
+    public void Init()
+    {
         // 몽고 DB로부터 article 조회
         // 1. 몽고DB 연결
         string connectionString = "mongodb+srv://jms5966:jms5966@cluster0.juowh4x.mongodb.net/";
-        MongoClient mongoclient = new MongoClient(connectionString);
-        
+        var mongoclient = new MongoClient(connectionString);
         // 2. 특정 데이터베이스 연결
         IMongoDatabase sampleDB = mongoclient.GetDatabase("metavers");
         // 3. 특정 콜렉션 연결
-        var articleCollection = sampleDB.GetCollection<BsonDocument>("articles");
+        _articleCollection = sampleDB.GetCollection<BsonDocument>("articles");
 
+    }
+
+    public void FindAll()
+    {
         // 4. 모든 문서 읽어오기
-        List<BsonDocument> alldata = articleCollection.Find(new BsonDocument()).ToList();
+        List<BsonDocument> alldata = _articleCollection.Find(new BsonDocument()).ToList();
 
         // 5. 읽어온 문서 만큼 New Article()해서 데이터 채우고
+        _articles.Clear();
         foreach (var data in alldata)
         {
+            //    _articles에 넣기
             _articles.Add(new Article()
             {
                 ArticleType = (ArticleType)(int)data["ArticleType"],
@@ -50,6 +61,26 @@ public class ArticleManager : MonoBehaviour
                 WriteTime = DateTime.Parse(data["WriteTime"].ToString())
             });
         }
-        //    _articles에 넣기
+    }
+    public void FindNotice()
+    {
+
+        // 4. 공지 문서 읽어오기
+        List<BsonDocument> alldata = _articleCollection.Find(data => data["ArticleType"] == (int)ArticleType.Notice).ToList();
+
+        // 5. 읽어온 문서 만큼 New Article()해서 데이터 채우고
+        _articles.Clear();
+        foreach (var data in alldata)
+        {
+            //    _articles에 넣기
+            _articles.Add(new Article()
+            {
+                ArticleType = (ArticleType)(int)data["ArticleType"],
+                Name = data["Name"].ToString(),
+                Content = data["Content"].ToString(),
+                Like = (int)data["Like"],
+                WriteTime = DateTime.Parse(data["WriteTime"].ToString())
+            });
+        }
     }
 }

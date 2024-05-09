@@ -44,6 +44,8 @@ public class UI_ArticleList : MonoBehaviour
             Images[i].SetActive(false);
         }
         gameObject.SetActive(true);
+        ArticleManager.Instance.FindAll();
+        Refresh();
     }
     public void OnclickNoticeArticles(GameObject gameObject)
     {
@@ -52,6 +54,8 @@ public class UI_ArticleList : MonoBehaviour
             Images[i].SetActive(false);
         }
         gameObject.SetActive(true);
+        ArticleManager.Instance.FindNotice();
+        Refresh();
     }
     public void OnclickPictureArticles(GameObject gameObject)
     {
